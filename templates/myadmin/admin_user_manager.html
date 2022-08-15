@@ -1,0 +1,125 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block cssorjs %}
+  <script src="{% static 'js/myadmin/admin_user_manager.js' %}"></script>
+  <style>
+    th,td{
+      width:20%;
+    }
+  </style>
+{% endblock cssorjs %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-11 bg-warning" style="height: 70px;line-height: 70px;text-align: center;">
+            <p><h3>用户管理</h3></p>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-lg-11 bg-white" style="margin-top: 20px;height: 50px;">
+            <button class="btn btn-dark" style="float: right;margin-left: 10px;"><i class="bi bi-plus"></i></button>
+            <button class="btn btn-dark" style="float: right;;margin-left: 10px;"><i class="bi bi-play"></i></button>
+            <button class="btn btn-dark" style="float: right;;margin-left: 10px;"><i class="bi bi-palette2"></i></button>
+        </div>
+        <div class="col-lg-11 " style="">
+            <table class="table table-dark" style="margin:auto;">
+                <thead>
+                  <tr>
+                    <th>账号</th>
+                    <th>用户权限</th>
+                    <th>用户状态</th>
+                    <th>用户等级</th>
+                    <th>操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user in page %}
+                    <tr>
+                      {% csrf_token %}
+                      <td>
+                        {{ user.reg_email }}
+                      </td>
+
+                      <td>
+                        <p style="display:inline" ondblclick ="myDbclick(this)">
+                          {% if user.permission %}
+                          管理员
+                          {% else %}
+                          普通用户
+                          {% endif %}
+                        </p>
+                        <select  style="display:none;" onblur="selectonblur(this,{{ user.id }},'permission')">
+                          <option>普通用户</option>
+                          <option>管理员</option>
+                        </select>
+                      </td>
+
+                      <td>
+                        <p style="display:inline" ondblclick ="myDbclick(this)">
+                          {% if user.isactive %}
+                          启用
+                          {% else %}
+                          禁用
+                          {% endif %}
+                        </p>
+                        <select  style="display:none;" onblur="selectonblur(this,{{ user.id }},'isactive')">
+                          <option>禁用</option>
+                          <option>启用</option>
+                        </select>
+                      </td>
+
+                      <td>
+                        {{ user.baseinfo.level }}级
+                      </td>
+
+                      <td>
+                          <button class="btn btn-success" title="修改密码"><i class="bi bi-file-earmark-text-fill"></i></button>
+                          <button class="btn btn-success" title="查看"><i class="bi bi-search"></i></button>
+                      </td>
+                    </tr>
+                  {% endfor %}
+                 
+                  
+                 
+                </tbody>
+              </table>
+        </div>
+        <div class="col-lg-11">
+          <ul class="pagination justify-content-center ">
+            {% if page.has_previous %}
+                <li class="page-item"><a class="page-link" href="{% url 'admin-user' %}?page={{ page.previous_page_number}}">上一页</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="javascript:void(0);">上一页</a></li>
+            {% endif %}
+
+            {% for p in paginator.page_range %}
+                {% if p == page.number %}
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);">{{ p }}</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="{% url 'admin-user' %}?page={{ p }}">{{ p }}</a></li>
+                {% endif %}
+            {% endfor%}
+
+            {% if page.has_next %}
+                <li class="page-item"><a class="page-link" href="{% url 'admin-user' %}?page={{ page.next_page_number }}">下一页</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="javascript:void(0);">下一页</a></li>
+            {% endif %}
+
+
+
+          </ul>
+      </div>
+    </div>	
+
+{% endblock content %}
+
+
+{% block model %}
+
+
+
+{% endblock model %}					
+			

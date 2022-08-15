@@ -1,0 +1,85 @@
+
+
+    <ul class="sidebar-item-group">
+        <li class="station-name">
+            <a href="#0">
+                <i class="bi bi-justify con"></i>
+                <h1 class="links_name">blog</h1>
+            </a>
+            
+        </li>
+        
+        <li class="sidebar-item">
+            <a href="{% url 'admin-index' %}">
+                <i class="bi bi-graph-up"></i>
+                <span class="links_name">数据统计</span>
+            </a>
+            
+        </li>
+        
+        <li class="sidebar-item">
+            <a href="{% url 'admin-user' %}">
+                <i class="bi bi-person"></i>
+                <span class="links_name">用户管理</span>
+            </a>
+            
+        </li>
+        
+        <li class="sidebar-item">
+            <a href="{% url 'admin-article' %}?page=1" >
+                <i class="bi bi-file" ></i>
+                <span class="links_name">文章管理</span>
+            </a>
+            
+        </li>
+        
+        <li class="sidebar-item">
+            <a href="#0" >
+                <i class="bi bi-chat-left-dots"></i>
+                <span class="links_name">评论管理</span>
+            </a>
+            
+        </li>
+        
+        <li class="sidebar-item">
+            <a href="{% url 'admin-tag' %}?page=1">
+                <i class="bi bi-bookmark-check-fill"></i>
+                <span class="links_name">标签管理</span>
+            </a>
+            
+        </li>
+        
+        <li class="sidebar-item">
+            <a href="{% url 'admin-link' %}?page=1">
+                <i class="bi bi-diagram-3-fill"></i>
+                <span class="links_name">导航管理</span>
+            </a>
+            
+        </li>
+
+        <li class="sidebar-item">
+            <a href="{% url 'admin-carousel' %}?page=1">
+                <i class="bi bi-images"></i>
+                <span class="links_name">轮播图</span>
+            </a>
+            
+        </li>
+        
+        <li class="sidebar-item">
+            <a href="#0">
+                <i class="bi bi-pc"></i>
+                <span class="links_name">站点管理</span>
+            </a>
+            
+        </li>
+        
+    </ul>
+
+
+    <!--退出和返回首页按钮-->
+    <!--<div >-->
+        <a href="{% url 'front-index'%}" class="exit" title="退出">
+            <i class="bi bi-box-arrow-in-left"></i>
+        </a>
+        
+    <!--</div>-->

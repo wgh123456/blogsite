@@ -1,0 +1,47 @@
+.headshot-upload {
+    position:relative;
+    display:inline-block;
+    /* overflow:hidden; */
+    width:100px;
+    height:100px;
+    line-height:100px;
+    background-size:100% 100%;
+    padding:0;
+    left:25px;
+}
+
+.headshot-show {
+    width:100px;
+    height:100px;
+    position:absolute;
+    left:0;
+    top:0;
+}
+    
+.headshot-upload input{
+    position:absolute;
+    left:0;
+    top:0;
+    opacity:0;
+    width:100px;
+    height:100px;
+}
+
+.username-show, .sex-show {
+    font-family: "华文行楷";
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.pshow {
+    text-align: center;
+    height:30px;
+    line-height: 30px;
+    margin-top:10px;
+}
+
+.phone-show {
+    font-family: "行楷";
+    font-size: 20px;
+    font-weight: 300;
+}

@@ -1,0 +1,168 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block cssorjs %}
+	<link rel="stylesheet" href="{% static 'css/myadmin/admin_index_data.css' %}" />
+    <script src="{% static 'js/myadmin/admin_carousel_manager.js' %}"></script>
+
+{% endblock cssorjs %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-11 bg-warning" style="height: 70px;line-height: 70px;text-align: center;">
+            <p><h3>轮播图</h3></p>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-lg-11 bg-white" style="margin-top: 20px;height: 50px;">
+            <a class="btn btn-dark" style="float: right;;margin-left: 10px;" href="{% url 'carousel-edit' %}" target="_blank">
+                <i class="bi bi-plus"></i>
+            </a>
+        </div>
+        <div class="col-lg-11 " style="">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th>图片路径</th>
+                    <th>图片标题</th>
+                    <th>图片描述</th>
+                    <th>关联文章</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for img in carousel_list %}
+                        <tr>
+                            {% csrf_token %}
+                            <td>
+                                <p title="{{ img.CarImage|cut:"http://www.memcpy.top/static/images/carousel/" }}">
+                                    {{ img.CarImage|cut:"http://www.memcpy.top/static/images/carousel/"|truncatechars:'15'|add:'...' }}
+                                </p>
+                            </td>
+                           
+                            <td data-toggle="modal" data-target="#updateCarTitle">
+                                <div title="{{ img.CarTitle }}"  onclick="changeModelInfo(this,{{ img.id }},'title')" >
+                                    {{ img.CarTitle|truncatechars:'15' }}
+                                </div>
+                            </td>
+
+                            <td data-toggle="modal" data-target="#updateCarDetail">
+                                <div title="{{ img.CarDetail }}" onclick="changeModelInfo(this,{{ img.id }},'detail')"  >
+                                    {{ img.CarDetail|truncatechars:'15' }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <p ondblclick ="myDbclick(this)" title="{{ article.articleTitle }}" style="display:inline">
+                                    {% for article in article_list %}
+                                        {% ifequal img.PointArticle article.id %}
+                                            {{ article.articleTitle }}
+                                        {% endifequal %}
+                                    {% endfor %}
+                                    {% if img.PointArticle == 0 %}
+                                        无关联文章
+                                    {% endif %}
+                                </p>
+                                <select  style="display:none;" onblur="inputonblur(this,{{ img.id }},'articleid')">
+                                    <option>0-无</option>
+                                    {% for article in article_list %}
+                                        <option>{{ article.id }}-{{ article.articleTitle|truncatechars:'10' }}</option>
+                                    {% endfor %}
+                                    
+                                </select>
+                            </td>
+
+                            <td>
+                                <p style="display:inline" ondblclick ="myDbclick(this)">
+                                    {% if img.status %}
+                                    发布
+                                    {% else %}
+                                    禁用
+                                    {% endif %}
+                                </p>
+                                <select  style="display:none;" onblur="inputonblur(this,{{ img.id }},'status')">
+                                    <option>禁用</option>
+                                    <option>发布</option>
+                                </select>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+              </table>
+        </div>
+        <div class="col-lg-11">
+            <ul class="pagination justify-content-center ">
+              {% if page.has_previous %}
+                  <li class="page-item"><a class="page-link" href="{% url 'admin-carousel' %}?page={{ page.previous_page_number}}">上一页</a></li>
+              {% else %}
+                  <li class="page-item"><a class="page-link" href="javascript:void(0);">上一页</a></li>
+              {% endif %}
+
+              {% for p in paginator.page_range %}
+                  {% if p == page.number %}
+                      <li class="page-item"><a class="page-link" href="javascript:void(0);">{{ p }}</a></li>
+                  {% else %}
+                      <li class="page-item"><a class="page-link" href="{% url 'admin-carousel' %}?page={{ p }}">{{ p }}</a></li>
+                  {% endif %}
+              {% endfor%}
+
+              {% if page.has_next %}
+                  <li class="page-item"><a class="page-link" href="{% url 'admin-carousel' %}?page={{ page.next_page_number }}">下一页</a></li>
+              {% else %}
+                  <li class="page-item"><a class="page-link" href="javascript:void(0);">下一页</a></li>
+              {% endif %}
+
+
+
+            </ul>
+        </div>
+    </div>	
+</div>
+
+
+
+
+
+{% endblock content %}
+
+{% block model %}
+<div class="modal fade" id="updateCarTitle">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- 模态框主体 -->
+        {% csrf_token %}
+        <div class="modal-body">
+            <textarea style="width:100%;height:135px;resize: none;" maxlength="200" id="title-txt"></textarea>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" onclick="updateInfo('title')">修改</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="modal fade" id="updateCarDetail">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- 模态框主体 -->
+        {% csrf_token %}
+        <div class="modal-body">
+            <textarea style="width:100%;height:135px;resize: none;" maxlength="200" id="detail-txt"></textarea>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" onclick="updateInfo('detail')">修改</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock model %}
+					
+			

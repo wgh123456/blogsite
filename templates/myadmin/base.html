@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>管理员界面</title>
+		<link rel="shortcut icon" href="{% static 'images/site/site.ico' %}">
+
+        <link rel="stylesheet" href="{% static 'css/bootstrap4/css/bootstrap.min.css' %}  " />
+		<link rel="stylesheet" href="{% static 'font/bootstrap-icons.css' %}"/>
+		<link rel='stylesheet' href="{% static 'css/myadmin/base.css' %}"/>
+        <link rel="stylesheet" href="{% static 'css/myadmin/sidebar.css' %}" />
+
+        <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap4/js/popper.min.js' %}"></script>
+		<script src="{% static 'js/bootstrap4/js/bootstrap.min.js' %}"></script>
+		<script src="{% static 'js/myadmin/sidebar.js' %}"></script>
+
+		{% block cssorjs %}{% endblock cssorjs %}
+
+    </head>
+    <body>
+        <div class="main">
+			<div class="bg-secondary admin-sidebar">
+				
+				{% include 'myadmin/sidebar.html' %}
+				
+			</div>
+
+            <div class="admin-content">
+				<div class="content-main ">
+
+					{% block content %}{% endblock content %}
+					
+				</div>
+			</div>
+			{% block model %}{% endblock model %}
+    </body>
+</html>    

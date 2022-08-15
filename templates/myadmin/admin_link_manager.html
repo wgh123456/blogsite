@@ -1,0 +1,143 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block cssorjs %}
+	<link rel="stylesheet" href="{% static 'css/myadmin/admin_index_data.css' %}" />
+    <script src="{% static 'js/myadmin/admin_link_manager.js' %}"></script>
+
+{% endblock cssorjs %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-11 bg-warning" style="height: 70px;line-height: 70px;text-align: center;">
+            <p><h3>导航管理</h3></p>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-lg-11 bg-white" style="margin-top: 20px;height: 50px;">
+            <button class="btn btn-dark" style="float: right;;margin-left: 10px;" data-toggle="modal" data-target="#addtag">
+                <i class="bi bi-plus"></i>
+            </button>
+        </div>
+        <div class="col-lg-11 " style="">
+            <table class="table table-dark" ">
+                <thead>
+                  <tr>
+                    <th style="width:25%;">导航名</th>
+                    <th style="width:25%;">状态</th>
+                    <th style="width:25%;">主链接</th>
+                    <th style="width:25%;">操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for link in page %}
+                        <tr>
+                            {% csrf_token %}
+                            <td>
+                                <div contenteditable="true" onblur="inputonblur(this,{{ link.id }},'linkname')">{{ link.linkname }}</div>
+                            </td>
+                            
+                            <td>
+                                {% if link.isactive %}
+                                <p style="display:inline" ondblclick ="activeStatusDbclick(this)">激活</p>
+                                {% else %}
+                                <p style="display:inline" ondblclick ="activeStatusDbclick(this)">禁用</p>
+                                {% endif %}
+                                <select  style="display:none;" onblur="inputonblur(this,{{ link.id }},'isactive')">
+                                    <option>激活</option>
+                                    <option>禁用</option>
+                                </select>
+                            </td>
+
+                            <td>
+                                <p style="display:inline" ondblclick ="activeStatusDbclick(this)">{{ link.parent_id }}</p>
+                                <select  style="display:none;" onblur="inputonblur(this,{{ link.id }},'parentLink')">
+                                    {% if link.parent_id != 0 %}
+                                        <option>0-主链接</option>
+                                    {% endif %}
+                                    
+                                    {% for parent_obj in parent_link_list %}
+                                        {% if parent_obj.id != link.id%}
+                                            <option>{{ parent_obj.id }}-{{ parent_obj.linkname }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                                
+                            </td>
+                            
+                            <td>
+                                <a class="btn btn-success" title="修改"><i class="bi bi-file-earmark-text-fill"></i></a>
+                                <a class="btn btn-success" title="删除"><i class="bi bi-trash-fill"></i></a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+              </table>
+        </div>
+        <div class="col-lg-11">
+            <ul class="pagination justify-content-center ">
+                {% if page.has_previous %}
+                    <li class="page-item"><a class="page-link" href="{% url 'admin-link' %}?page={{ page.previous_page_number}}">上一页</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);">上一页</a></li>
+                {% endif %}
+
+                {% for p in paginator.page_range %}
+                    {% if p == page.number %}
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">{{ p }}</a></li>
+                    {% else %}
+                        <li class="page-item"><a class="page-link" href="{% url 'admin-link' %}?page={{ p }}">{{ p }}</a></li>
+                    {% endif %}
+                {% endfor%}
+
+                {% if page.has_next %}
+                    <li class="page-item"><a class="page-link" href="{% url 'admin-link' %}?page={{ page.next_page_number }}">下一页</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);">下一页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>	
+</div>
+
+
+
+
+
+{% endblock content %}
+
+{% block model %}
+<div class="modal fade" id="addtag">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- 模态框头部 -->
+        <div class="modal-header">
+          <h4 class="modal-title">添加导航</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        {% csrf_token %}
+        <!-- 模态框主体 -->
+        <div class="modal-body">
+            <input type="text" id="linkname" class="form-control" name='linkname' value=""  placeholder="导航名" >
+        </div>
+        <div class="modal-body">
+            <select class="form-control" id="parentlink" style="width: 100%;">
+                <option></option>
+                {% for parent_link in parent_link_list %}
+                    <option>{{ parent_link.linkname }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <!-- 注册模态框底部 -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success addlink-button" onclick="addlink()">添加</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">关闭</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock model %}
+					
+			

@@ -1,0 +1,47 @@
+{% extends 'front/base.html' %}
+{% load static %}
+
+{% block cssandjs %}
+<link rel="stylesheet" href="{% static 'css/front/readarticle.css' %}"/>
+{% endblock cssandjs %}
+
+<!--轮播图-->
+{% block carousel %}
+	
+{% endblock carousel%}
+
+
+<!--页面主体-->
+{% block content %}
+<div class="container" style="margin-top: 60px;" >
+    <div class="row">
+        <!--文章主体-->
+        <div class="col-sm-9" style="background-color: white;margin-left: 0px;padding: 20px;">
+            {% comment %} {{ article_item.articleContent|safe}} {% endcomment %}
+            <div class="row">
+                <div class="col-sm-12">
+                    <h1 class="" style="font-family:'隶书'">{{ article_item.articleTitle }}</h1>
+                </div>
+                <div class="col-sm-12" style="height: 40px;background-color:rgba(248,248,248,0.8);border-radius: 5px;padding-bottom: 0px;">
+                    <p style="color: #495057;line-height: 14px;font-size: 14px;margin-bottom: 5px;">作者：{{ article_item.author }}  于{{ article_item.updatetime|date:"Y-m-d H:i:s" }} 编辑</p>
+                    <p style="line-height: 14px;font-size: 14px;">
+                        文章标签：
+                        {% for tag in all_tag_list%}
+                            <a href="javascript:void(0)" class="badge badge-light">{{ tag }}</a>
+                        {% endfor %}
+                        
+                    </p>
+                </div>
+                <div class="col-sm-12" style="margin-top:20px;">
+					{{ article_item.articleContent|safe}}		
+                </div>
+                
+            </div>
+           
+        </div>
+        <!--侧边栏-->
+        {% include 'front/side.html' %}
+        <!--<div class="w-100">	</div>-->
+    </div>
+</div>
+{% endblock content%}

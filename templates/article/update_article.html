@@ -1,0 +1,214 @@
+{% extends 'article/base_write.html' %}
+{% load static %}
+
+
+{% block title %}
+修改文章
+{% endblock title %}
+
+{% block wirteArticle%}
+修改文章
+{% endblock wirteArticle%}
+
+{% block content %}
+{% csrf_token %}
+<!--文章标题-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">标题:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<input type="text" placeholder="标题" class="input-group-text input-lg title-article" style="width:800px;" value="{{ article_item.articleTitle}}"/>
+</div>	
+
+<!--正文-->
+<div class="col-lg-12 interval" >
+	<p class="options-title">正文:</p>
+	<div id="editorContent"></div>
+</div>
+
+<!--文章封面-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">封面:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<label class="btn btn-secondary fileinput-button">
+		<span>选择图片</span>
+		<input id="travelImgs"type="file" accept="image/*" onchange="uploader(this.files)" />
+	</1abe1>
+	
+</div>
+
+<!--预览图片-->
+<div class="col-lg-2 interval" ></div>
+<div class="col-lg-10 interval" >
+	<img src="{{ article_item.coverPath }}" alt="" id="o_photo_img" style="width:300px; height:100px;" />
+</div>
+
+
+<!--文章分类-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">分类:</p>
+</div>
+<div class="col-lg-10 interval" >
+	
+		<select class="form-control" id="sel1" style="width: 60%;">
+            <option>{{ selected_classification }}</option>
+            {% for link in link_list %}
+                <option>{{ link }}</option>
+		    {% endfor %}
+		</select>
+	
+</div>	
+
+<!--标签-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">标签:</p>
+</div>
+<div class="col-lg-10 container interval" >
+	<div class="row">
+	<select multiple class="form-control col-sm-5 select-zhu" id="sel2" style="width: 40%;">
+		{% for tag in tag_list %}
+			<option ondblclick="myFunction1(this)">{{ tag }}</option>
+		{% endfor %}
+	</select>
+	<p class="col-sm-1 text-center" style="vertical-align: middle;line-height: 116px;">
+		<i class="bi bi-arrow-bar-right"></i>
+	</p>
+	<select multiple class="form-control col-sm-5 select-bei" id="sel3" style="width: 40%;">
+        {% for selectedtag in all_tag_list%}
+            <option ondblclick="myFunction2(this)">{{ selectedtag }}</option>
+        {% endfor %}
+	</select>
+	</div>
+</div>	
+
+<!--作者-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">作者:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<input type="text" placeholder="作者" class="input-group-text input-lg" id="disabledInput" style="width:800px;cursor: no-drop;" value="{{ article_item.author }}" disabled/>
+</div>
+
+<!--文章状态-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">状态:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<select class="form-control" id="sel4" style="width: 40%;">
+		<option>发布</option>
+		<option>草稿箱</option>
+	</select>
+	
+   
+</div>	
+
+<!--置顶-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">排序:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<input type="text" placeholder="排序" class="input-group-text input-lg sort-input" style="width:30%" value="{{ article_item.sort }}"/>
+	<p class=""><small>0为置顶，其他数字数字越大越靠前，当前数字为推荐排序</small></p>
+</div>	
+
+<!--提交-->
+<div class="col-lg-12 interval" >
+	<p class="text-center" style="min-width: 100%;">
+		<button class="btn btn-success saveBtn" onclick="save()" style="width:30%;">提交修改</button>
+	</p>
+	
+</div>
+{% endblock content %}
+
+{% block js %}
+<script>
+var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+// 创建编辑窗口
+var E = window.wangEditor;
+var editor = new E('#editorContent');
+editor.customConfig.uploadImgServer = "/utils/uploadfile/";
+editor.customConfig.uploadImgParams = {
+    source: 'contentImage',
+    filetype:'image',
+    csrfmiddlewaretoken:csrftoken
+}
+editor.customConfig.uploadFileName = 'file'; 
+editor.customConfig.uploadImgMaxLength = 5;
+editor.create();
+$(".w-e-text-container").css("height", "500px");
+editor.txt.html('{{ article_item.articleContent|safe }}');
+
+
+function save() {
+    var csrftoken = document.getElementsByName('csrfmiddlewaretoken')[0].value;
+    // 获取标题
+    var titleArticle = document.getElementsByClassName('title-article')[0].value;
+
+    // 获取正文
+    var content = editor.txt.html();
+    // alert(content);
+
+    // 获取封面
+    // var cover = $('#travelImgs')[0].files
+    var img=document.getElementById("o_photo_img");
+    var coverPath = img.getAttribute("src");
+    // alert(coverPath);
+
+    // 获取分类
+    var myselect=document.getElementById("sel1");
+    var index=myselect.selectedIndex ;
+    var classification = myselect.options[index].text;
+    // alert(classification);
+
+    // 获取标签
+    var tagArr = document.getElementById('sel3');
+    var tagStr = '';
+    for(var i = 0;i<tagArr.length;i++){
+        tagStr = tagStr+tagArr[i].innerText+";";
+    }
+    // 获取状态
+    var selectStatus=document.getElementById("sel4");
+    var indexSel4=selectStatus.selectedIndex ;
+    var statusArticle = selectStatus.options[indexSel4].text;
+    // alert(statusArticle);
+    // 获取排序序号
+    var sort = document.getElementsByClassName('sort-input')[0].value;
+    // alert(sort);
+
+    // ajax post提交
+    $.post('/article/update/?articleid={{ article_item.id }}',
+    {
+        arTitle:titleArticle,
+        arContent:content,
+        coverPath:coverPath,
+        classification:classification,
+        tag:tagStr,
+        statusArticle:statusArticle,
+        sort:sort,
+        csrfmiddlewaretoken:csrftoken
+    },
+    function(data,status){
+        if(status=="success")
+        {
+            if(data.status==100)
+            {
+                alert(data.data);
+            }
+            else if(data.status)
+            {
+                alert(data.data);
+                window.location.href='http://'+ window.location.host + '/myadmin/article/';
+            }
+            
+        }else
+        {
+            alert("上传数据错误");
+        }
+        
+    });
+
+}
+</script>
+<script src="{% static 'js/article/updateArticle.js' %}"></script>
+{% endblock js %}

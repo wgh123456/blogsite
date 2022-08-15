@@ -1,0 +1,123 @@
+{% extends 'article/base_write.html' %}
+{% load static %}
+
+
+{% block title %}
+写文章
+{% endblock title %}
+
+{% block wirteArticle%}
+写文章
+{% endblock wirteArticle%}
+
+{% block content %}
+<!--文章标题-->
+{% csrf_token %}
+<div class="col-lg-2 interval" >
+	<p class="options-title">标题:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<input type="text" placeholder="标题" class="input-group-text input-lg title-article" style="width:800px;"/>
+</div>	
+
+<!--正文-->
+<div class="col-lg-12 interval" >
+	<p class="options-title">正文:</p>
+	<div id="editorContent"></div>
+</div>
+
+<!--文章封面-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">封面:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<label class="btn btn-secondary fileinput-button">
+		<span>选择图片</span>
+		<input id="travelImgs"type="file" accept="image/*" onchange="uploader(this.files)" />
+	</1abe1>
+	
+</div>
+
+<!--预览图片-->
+<div class="col-lg-2 interval" ></div>
+<div class="col-lg-10 interval" >
+	<img src="" alt="" id="o_photo_img" style="width:300px; height:100px;display: none;" />
+</div>
+
+
+<!--文章分类-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">分类:</p>
+</div>
+<div class="col-lg-10 interval" >
+	
+		<select class="form-control" id="sel1" style="width: 60%;">
+			{% for link in link_list %}
+                <option>{{ link.linkname }}</option>
+		    {% endfor %}
+		</select>
+	
+</div>	
+
+<!--标签-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">标签:</p>
+</div>
+<div class="col-lg-10 container interval" >
+	<div class="row">
+	<select multiple class="form-control col-sm-5 select-zhu" id="sel2" style="width: 40%;">
+		{% for tag in tag_list %}
+			<option ondblclick="myFunction1(this)">{{ tag.tagName }}</option>
+		{% endfor %}
+	</select>
+	<p class="col-sm-1 text-center" style="vertical-align: middle;line-height: 116px;">
+		<i class="bi bi-arrow-bar-right"></i>
+	</p>
+	<select multiple class="form-control col-sm-5 select-bei" id="sel3" style="width: 40%;">
+		
+	</select>
+	</div>
+</div>	
+
+<!--作者-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">作者:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<input type="text" placeholder="作者" class="input-group-text input-lg" id="disabledInput" style="width:800px;cursor: no-drop;" disabled/>
+</div>
+
+<!--文章状态-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">状态:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<select class="form-control" id="sel4" style="width: 40%;">
+		<option>发布</option>
+		<option>草稿箱</option>
+	</select>
+	
+   
+</div>	
+
+<!--置顶-->
+<div class="col-lg-2 interval" >
+	<p class="options-title">排序:</p>
+</div>
+<div class="col-lg-10 interval" >
+	<input type="text" placeholder="排序" class="input-group-text input-lg sort-input" style="width:30%"/>
+	<p class=""><small>0为置顶，其他数字数字越大越靠前，当前数字为推荐排序</small></p>
+</div>	
+
+<!--提交-->
+<div class="col-lg-12 interval" >
+	<p class="text-center" style="min-width: 100%;">
+		<button class="btn btn-success saveBtn" onclick="save()" style="width:30%;">提交</button>
+	</p>
+	
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'js/article/writeArticle.js' %}"></script>
+{% endblock js %}

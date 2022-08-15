@@ -1,0 +1,80 @@
+{% load static %}
+<div class="col-sm-3" >
+    <div class="card">
+        <div class="card-header bg-dark " style="color: ghostwhite;font-family: "楷体";">公告</div>
+        <div class="card-body" >
+            <span>
+                每日公告
+            </span>
+        </div>
+    </div>
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header bg-dark " style="color: ghostwhite;font-family: "楷体";">标签</div>
+        <div class="card-body">
+            {% for tag in tag_list %}
+                {% if tag.color == '1' %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-primary">{{ tag.tagName }}</a>
+                {% elif tag.color == 2 %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-secondary">{{ tag.tagName }}</a>
+                {% elif tag.color == 3 %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-success">{{ tag.tagName }}</a>
+                {% elif tag.color == 4 %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-danger">{{ tag.tagName }}</a>
+                {% elif tag.color == 5 %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-warning">{{ tag.tagName }}</a>
+                {% elif tag.color == 6 %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-info">{{ tag.tagName }}</a>
+                {% elif tag.color == 7 %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-light">{{ tag.tagName }}</a>
+                {% elif tag.color == 8 %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-dark">{{ tag.tagName }}</a>
+                {% else %}
+                    <a href="{% url 'front-tag-group' tag.pinyin %}" class="badge badge-dark">{{ tag.tagName }}</a>
+                {% endif %}    
+            {% endfor %}
+            
+        </div>
+    </div>
+    
+  
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header bg-dark" style="color: ghostwhite;font-family: "楷体";">最近新增</div>
+            <div class="list-group text-centers">
+                {% for recent_article in recent_add_article_list%}
+                    <a href="{% url 'front-read' %}?articleid={{ recent_article.id }}" class="list-group-item list-group-item-action">
+                        {{ recent_article.articleTitle }}
+                    </a>
+                {% endfor %}
+              
+            </div>
+    </div>
+    
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header bg-dark" style="color: ghostwhite;font-family: "楷体";">最近修改</div>
+        <!--<div class="card-body">-->
+            <div class="list-group text-centers">
+                {% for recent_article in recent_update_article_list%}
+                <a href="{% url 'front-read' %}?articleid={{ recent_article.id }}" class="list-group-item list-group-item-action">
+                    {{ recent_article.articleTitle }}
+                </a>
+            {% endfor %}
+            </div>
+        <!--</div>-->
+    </div>
+    
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header bg-dark" style="color: ghostwhite;font-family: '楷体';">最多评论</div>
+        <div class="list-group text-centers">
+            
+        </div>
+    </div>
+    
+    <div class="card" style="margin-top: 10px;">
+        <div class="card-header bg-dark" style="color: ghostwhite;font-family: '楷体';">欢迎您star或者fork本站源代码</div>
+        <div class="card-body">
+            <a href="#"><i class="bi bi-github"></i></a>
+            <i class="bi "></i>
+        </div>
+    </div>
+    
+</div>

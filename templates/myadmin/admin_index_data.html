@@ -1,0 +1,47 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block cssorjs %}
+	<link rel="stylesheet" href="{% static 'css/myadmin/admin_index_data.css' %}" />
+{% endblock cssorjs %}
+
+{% block content %}
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="card col-lg-5" >
+				<h4>文章点赞</h4>
+				<img src="{% static 'images/peak.jpeg'%}" />
+			</div>
+			
+			<div class="card col-lg-5" >
+				<h4>文章阅读量</h4>
+				<img src="{% static 'images/peak.jpeg'%}" />
+			</div>
+			<div class="w-100"></div>
+			
+			<div class="card col-lg-5" >
+				<h4>文章发布</h4>
+				<img src="{% static 'images/peak.jpeg'%}" />
+			</div>
+			
+			
+			<div class="card col-lg-5" >
+				<h4>流量统计</h4>
+				<img src="{% static 'images/peak.jpeg'%}" />
+			</div>
+			<div class="w-100"></div>
+			
+			
+			<div class="card col-lg-5" >
+				<h4>关键词搜索统计</h4>
+				<img src="{% static 'images/peak.jpeg'%}" />
+			</div>
+		</div>
+	</div>
+
+{% endblock content %}
+
+
+					
+			

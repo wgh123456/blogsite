@@ -1,0 +1,81 @@
+{% extends 'myadmin/base.html' %}
+{% load static %}
+
+{% block cssorjs %}
+	<link rel="stylesheet" href="{% static 'css/myadmin/admin_index_data.css' %}" />
+    <script src="{% static 'js/myadmin/admin_article_manager.js' %}"></script>
+{% endblock cssorjs %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-11 bg-warning" style="height: 70px;line-height: 70px;text-align: center;">
+            <p><h3>文章管理</h3></p>
+        </div>
+        <div class="w-100"></div>
+        <div class="col-lg-11 bg-white" style="margin-top: 20px;height: 50px;">
+            <a class="btn btn-dark" style="float: right;;margin-left: 10px;" href="{% url 'write' %}" target="_blank"><i class="bi bi-plus"></i></a>
+        </div>
+        <div class="col-lg-11 " style="">
+            <table class="table table-dark">
+                <thead>
+                  <tr>
+                    <th>文章名</th>
+                    <th>文章状态</th>
+                    <th>文章标签</th>
+                    <th>文章作者</th>
+                    <th>文章操作</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% for article in page %}
+                        <tr>
+                            <td>{{ article.articleTitle }}</td>
+                            <td>{{ article.articleStatus }}</td>
+                            <td>{{ article.tag }}</td>
+                            <td>{{ article.author }}</td>
+                            <td>
+                                <a class="btn btn-success" title="修改" href="{% url 'update' %}?articleid={{ article.id }}"><i class="bi bi-file-earmark-text-fill"></i></a>
+                                <i class="btn btn-success" title="删除" onclick="deleteArticle({{ article.id }})"><i class="bi bi-trash-fill"></i></i>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+                </tbody>
+              </table>
+        </div>
+        <div class="col-lg-11">
+            <ul class="pagination justify-content-center ">
+                <!--判断是否有上一页，然后拼接关于page的查询字符串-->
+                {% if page.has_previous %}
+                {# 得到上一页的页码编号 #}
+                    <li class="page-item"><a class="page-link" href="{% url 'admin-article' %}?page={{ page.previous_page_number }}">上一页</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="javascript:void(0)">上一页</a></li>
+                {% endif %}
+
+                {% for p in paginator.page_range %}
+                    {# 如果页面编号等于当前页码序号 #}
+                    {% if p == page.number %} 
+                        <li class="page-item"><a class="page-link" href="javascript:void(0);">{{ p }}</a></li>
+                    {% else %}
+                        {# 否则跳转到页码相对应的页面 #}
+                        <li class="page-item"><a class="page-link" href="{% url 'admin-article' %}?page={{ p }}">{{ p }}</a></li>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if page.has_next %}
+                    <li class="page-item"><a class="page-link" href="{% url 'admin-article' %}?page={{ page.next_page_number }}">下一页</a></li>
+                {% else %}
+                    <li class="page-item"><a class="page-link" href="javascript:void(0);">下一页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>	
+</div>
+{% endblock content %}
+
+
+					
+			

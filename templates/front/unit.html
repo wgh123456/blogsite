@@ -1,0 +1,51 @@
+{% load static %}
+
+<div class="unit">
+    <i  class="unit-item text-center chat-enter bi bi-chat-dots-fill" data-toggle="modal" data-target="#chat"></i>
+    <i  class="unit-item text-center backtop bi bi-arrow-up-circle-fill"></i>
+</div>
+
+<div class="modal fade" id="chat">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+            <!-- 模态框头部 -->
+            <div class="modal-header">
+              <h5 class="modal-title">联系管理员</h4>
+            </div>
+   
+            <!-- 模态框主体 -->
+            <div class="modal-body container-fluid" style="height:200px;">
+             <div class="row">
+                <div class="col-sm-3 scroll-style" style="border-right:1px solid;height:150px;background:red;">
+                    {% if user_info.permission %}
+                    {%else%}
+                    <ul style="background:blue;margin:0 auto;">
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                        <li style="background:green;"><a href="javascript:void(0);" style="text-align: center;">管理员</a></li>
+                    </ul>
+                    
+                    {%endif%}
+                </div>
+                <div class="col-sm-9">222</div>
+             </div>
+            </div>
+   
+            <!-- 模态框底部 -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" >发送</button>
+           </div>
+
+      </div>
+    </div>
+</div>
